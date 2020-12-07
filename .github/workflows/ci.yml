@@ -28,6 +28,7 @@ jobs:
         echo "source /opt/lsst/software/stack/loadLSST.bash" >> .bashrc
         echo "setup lsst_sims" >> .bashrc
         echo "cd $HOME" >> .bashrc
+        echo "eups list lsst_sims" >> .bashrc
 
     - name: Install git
       shell: bash -l {0}
@@ -37,7 +38,12 @@ jobs:
             conda install -y git
         fi
 
-    - uses: actions/checkout@v2
+    - name: Clone the package and checkout out the branch
+      shell: bash -l {0}
+      run: |
+        git clone https://github.com/${GITHUB_REPOSITORY}
+        cd desc_sim_utils
+        git checkout ${GITHUB_REF}
 
     - name: Install CI tools and package dependencies
       shell: bash -l {0}
@@ -54,4 +60,5 @@ jobs:
     - name: Test with nosetests
       shell: bash -l {0}
       run: |
+        cd ${PWD}/desc_sim_utils
         nosetests -s --with-coverage --cover-package=desc.sim_utils
