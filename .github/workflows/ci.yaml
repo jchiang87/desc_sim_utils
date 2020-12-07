@@ -18,7 +18,7 @@ jobs:
         stack:
           - lsstdesc/stack-sims:w_2019_42-sims_w_2019_42-v2
 
-    container: ${{ matrx.stack }}
+    container: ${{ matrix.stack }}
 
     steps:
     - name: Set up environment
